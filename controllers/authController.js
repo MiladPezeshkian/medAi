@@ -22,8 +22,10 @@ const createSendToken = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // فقط در حالت تولید امن است
-    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // در حالت تولید نیاز به None است
+    secure: true,
+    //  process.env.NODE_ENV === "production", // فقط در حالت تولید امن است
+    sameSite: "None",
+    // process.env.NODE_ENV === "production" ? "None" : "Lax", // در حالت تولید نیاز به None است
   };
   res.cookie("jwt", token, cookieOptions);
 
