@@ -26,6 +26,9 @@ mongoose
     console.error("DB connection error:", err);
     process.exit(1);
   });
+app.get("/", (req, res) => {
+  res.send("سلام، خوش آمدید!");
+});
 
 // Start the server
 const port = process.env.PORT || 3000;
