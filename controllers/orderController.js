@@ -101,8 +101,6 @@ exports.createOrder = catchAsync(async (req, res, next) => {
 
 // بروزرسانی یک سفارش
 exports.updateOrder = catchAsync(async (req, res, next) => {
-  console.log("residm");
-  console.log(req.body);
   const { orderItems, discount = 0 } = req.body;
 
   if (orderItems) {

@@ -20,7 +20,6 @@ exports.getAllWishlist = catchAsync(async (req, res, next) => {
 exports.setAllWishlist = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user._id);
   const wishlist = req.body.wishlist; // ویش‌لیست جدید از بدنه درخواست
-  console.log(user, wishlist);
   if (!user) {
     return next(new AppError("User not found", 404));
   }

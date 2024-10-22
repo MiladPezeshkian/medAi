@@ -49,7 +49,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     });
     createSendToken(newUser, 201, res);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 });
 
@@ -68,7 +68,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError("Incorrect email or password", 401));
   }
   if (!user.isActive) {
-    console.log(user.isActive);
+    // console.log(user.isActive);
     return next(new AppError("You Are Banned", 401)); // بلاک شده
   }
 
@@ -148,7 +148,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   }
   // 2) Generate random 5-digit code
   const resetCode = Math.floor(10000 + Math.random() * 90000); // 5-digit code
-  console.log(resetCode);
+  // console.log(resetCode);
   user.passwordResetToken = crypto
     .createHash("sha256")
     .update(resetCode.toString())

@@ -158,7 +158,7 @@ exports.getComments = catchAsync(async (req, res, next) => {
 exports.updateComment = catchAsync(async (req, res, next) => {
   const { reviewId, reviewText, rating } = req.body;
   // به‌روزرسانی نظر با استفاده از reviewId
-  console.log(reviewId, reviewText, rating);
+  // console.log(reviewId, reviewText, rating);
   const product = await Product.findOneAndUpdate(
     { "reviews._id": reviewId },
     {

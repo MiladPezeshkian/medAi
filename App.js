@@ -9,6 +9,7 @@ const cookieParser = require("cookie-parser");
 const AppError = require("./utils/AppError");
 const globalErrorHandler = require("./controllers/errorController");
 const apikey = require("./routes/apiKeyRoutes");
+const compression = require("compression");
 // Import Routes
 const authRoutes = require("./routes/authRoutes");
 const contactUsRoutes = require("./routes/contactUsRoutes");
@@ -35,7 +36,7 @@ const limiter = rateLimit({
   message: "Too many requests from this IP, please try again in an hour!",
 });
 app.use("/api", limiter);
-
+app.use(compression());
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: "10kb" }));
 

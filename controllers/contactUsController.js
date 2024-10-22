@@ -44,7 +44,7 @@ exports.getAllContactMessages = catchAsync(async (req, res, next) => {
 // ارسال پاسخ به کاربر از طریق ایمیل
 exports.SendMessage = catchAsync(async (req, res, next) => {
   const { email, message } = req.body;
-  console.log(email, message);
+  // console.log(email, message);
   // بررسی ورودی‌ها
   if (!email || !message) {
     return next(new AppError("Email and message are required", 400));

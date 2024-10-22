@@ -19,7 +19,7 @@ const sendEmail = async (options) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully!");
+    // console.log("Email sent successfully!");
   } catch (error) {
     console.error("Error sending email:", error.message); // لاگ کردن پیام خطا
     console.error("Full error details:", error); // لاگ کردن جزئیات کامل خطا

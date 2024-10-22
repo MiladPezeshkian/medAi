@@ -22,7 +22,7 @@ exports.getCoupon = catchAsync(async (req, res, next) => {
   if (!coupon) {
     return next(new AppError("No coupon found with that ID", 404));
   }
-  console.log(coupon[0].discount);
+  // console.log(coupon[0].discount);
   res.status(200).json({
     status: "success",
     discount: coupon[0].discount,
