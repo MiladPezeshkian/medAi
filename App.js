@@ -38,7 +38,7 @@ const limiter = rateLimit({
 // app.use("/api", limiter);
 app.use(compression());
 // Body parser, reading data from body into req.body
-// app.use(express.json({ limit: "10kb" }));
+app.use(express.json({ limit: "10kb" }));
 
 // Cookie parser
 app.use(cookieParser());
@@ -67,6 +67,9 @@ app.use("/api/v1/apikey", apikey); // Orders routes
 app.use("/api/v1/users", users);
 app.use("/api/v1/coupons", coupon);
 // Handle unhandled routes
+app.get("/", (req, res) => {
+  res.send("سلام، خوش آمدید!");
+});
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
