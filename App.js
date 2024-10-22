@@ -52,8 +52,8 @@ app.use(xss());
 // Implement CORS for frontend access
 app.use(
   cors({
-    origin: "http://localhost:5173", // Frontend address (replace with your frontend URL if needed)
-    credentials: true, // Allow credentials (cookies)
+    origin: "*", // همه آدرس‌ها را مجاز کنید
+    credentials: true,
   })
 );
 
