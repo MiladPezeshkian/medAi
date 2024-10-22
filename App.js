@@ -35,10 +35,10 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 100 requests per hour (یک ساعت)
   message: "Too many requests from this IP, please try again in an hour!",
 });
-app.use("/api", limiter);
+// app.use("/api", limiter);
 app.use(compression());
 // Body parser, reading data from body into req.body
-app.use(express.json({ limit: "10kb" }));
+// app.use(express.json({ limit: "10kb" }));
 
 // Cookie parser
 app.use(cookieParser());
