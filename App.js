@@ -48,14 +48,15 @@ app.use(mongoSanitize());
 
 // Data sanitization against XSS (cross-site scripting attacks)
 app.use(xss());
-
-// Implement CORS for frontend access
-app.use(
+app.options(
+  "*",
   cors({
-    origin: "http://localhost:5173", // همه آدرس‌ها را مجاز کنید
+    origin: "http://localhost:5173", // یا دامنه صحیح کلاینت شما
     credentials: true,
   })
 );
+
+// Implement CORS for frontend access
 
 // Routes mounting
 app.use("/api/v1/auth", authRoutes); // Authentication routes
