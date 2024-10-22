@@ -52,7 +52,7 @@ app.use(xss());
 // Implement CORS for frontend access
 app.use(
   cors({
-    origin: "*", // همه آدرس‌ها را مجاز کنید
+    origin: "http://localhost:5173", // همه آدرس‌ها را مجاز کنید
     credentials: true,
   })
 );
