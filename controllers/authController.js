@@ -298,17 +298,16 @@ exports.resetPasswordinLoggin = catchAsync(async (req, res, next) => {
  * @param {Object} res - The response object
  */
 exports.logout = (req, res) => {
-  // Delete the cookie by setting it to a value of "loggedout"
-  // and setting the expires to 50 seconds from now
-  console.log("iam hereeeeeeee log outtttttt");
   res.cookie("jwt", "loggedout", {
     expires: new Date(Date.now() + 50 * 1000),
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "None",
   });
 
-  // Return a success message
-  res.status(200).json({ status: "success" });
+  return res.status(200).json({ status: "success" });
 };
+
 // Get current user
 exports.getMe = catchAsync(async (req, res, next) => {
   // Check if the user exists in the request
