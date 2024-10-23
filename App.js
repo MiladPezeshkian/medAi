@@ -19,6 +19,8 @@ const orders = require("./routes/orderRoutes");
 const app = express();
 const users = require("./routes/userRoutes");
 const coupon = require("./routes/couponRoutes");
+app.options("*", cors());
+
 app.use("/uploads", express.static("uploads"));
 
 // Set security HTTP headers
@@ -48,13 +50,6 @@ app.use(mongoSanitize());
 
 // Data sanitization against XSS (cross-site scripting attacks)
 app.use(xss());
-app.options(
-  "*",
-  cors({
-    origin: "http://localhost:5173", // یا دامنه صحیح کلاینت شما
-    credentials: true,
-  })
-);
 
 // Implement CORS for frontend access
 
