@@ -280,6 +280,9 @@ exports.resetPasswordinLoggin = catchAsync(async (req, res, next) => {
   res.cookie("jwt", "loggedout", {
     expires: new Date(Date.now() + 50 * 1000),
     httpOnly: true,
+    secure: true,
+    //  process.env.NODE_ENV === "production", // فقط در حالت تولید امن است
+    sameSite: "None",
   });
 
   // 7) Send success response
