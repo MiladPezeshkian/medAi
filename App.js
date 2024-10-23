@@ -21,8 +21,9 @@ const users = require("./routes/userRoutes");
 const coupon = require("./routes/couponRoutes");
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    method: ["GET", "POST", "PATCH", "DELETE"],
+    origin: "http://localhost:5173", // یا آدرس دیپلوی شده در React
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    credentials: true,
   })
 );
 
