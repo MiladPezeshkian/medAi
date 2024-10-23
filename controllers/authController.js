@@ -299,13 +299,16 @@ exports.resetPasswordinLoggin = catchAsync(async (req, res, next) => {
  */
 exports.logout = (req, res) => {
   res.cookie("jwt", "loggedout", {
-    expires: new Date(Date.now() + 50 * 1000),
+    expires: new Date(Date.now() + 10 * 1000), // تنظیم زمان بیشتر مثلاً 10 ثانیه
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "production" ? true : false,
     sameSite: "None",
   });
 
-  return res.status(200).json({ status: "success" });
+  res.status(200).json({
+    status: "success",
+    message: "Logged out successfully",
+  });
 };
 
 // Get current user
