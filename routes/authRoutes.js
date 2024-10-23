@@ -32,7 +32,7 @@ router.post(
 router.get("/islogin", authController.isLogin);
 
 // Route for logout
-router.patch("/logout", authController.protect, authController.logout);
+router.patch("/logout", authController.logout);
 
 // Route for forgot password (sending reset code)
 router.post(
