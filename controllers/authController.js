@@ -299,18 +299,17 @@ exports.resetPasswordinLoggin = catchAsync(async (req, res, next) => {
  */
 exports.logout = (req, res) => {
   // کوکی را با نام jwt حذف می‌کنیم و همه تنظیمات مشابه با کوکی اصلی را استفاده می‌کنیم
-  res.cookie("jwt", "", {
-    expires: new Date(0), // تاریخ انقضا به گذشته برای حذف کوکی
-    httpOnly: true, // جلوگیری از دسترسی از طریق جاوااسکریپت
-    secure: process.env.NODE_ENV === "production", // در محیط تولید فقط با HTTPS
-    sameSite: "None", // کوکی‌ها برای درخواست‌های کراس سایت قابل دسترسی باشد
-    path: "/", // اطمینان از این که کوکی مربوط به مسیر اصلی است
-  });
-
-  res.status(200).json({
-    status: "success",
-    message: "Logged out successfully",
-  });
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+    secure: true,
+    //  process.env.NODE_ENV === "production", // فقط در حالت تولید امن است
+    sameSite: "None",
+    // process.env.NODE_ENV === "production" ? "None" : "Lax", // در حالت تولید نیاز به None است
+  };
+  res.status(200).cookie("jwt", "LogOut!", cookieOptions);
 };
 
 // Get current user
