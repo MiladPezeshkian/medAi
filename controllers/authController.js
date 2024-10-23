@@ -298,11 +298,13 @@ exports.resetPasswordinLoggin = catchAsync(async (req, res, next) => {
  * @param {Object} res - The response object
  */
 exports.logout = (req, res) => {
+  // کوکی را با نام jwt حذف می‌کنیم و همه تنظیمات مشابه با کوکی اصلی را استفاده می‌کنیم
   res.cookie("jwt", "", {
-    expires: new Date(0), // تاریخ انقضا به گذشته تنظیم شده تا کوکی حذف شود
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production" ? true : false,
-    sameSite: "None",
+    expires: new Date(0), // تاریخ انقضا به گذشته برای حذف کوکی
+    httpOnly: true, // جلوگیری از دسترسی از طریق جاوااسکریپت
+    secure: process.env.NODE_ENV === "production", // در محیط تولید فقط با HTTPS
+    sameSite: "None", // کوکی‌ها برای درخواست‌های کراس سایت قابل دسترسی باشد
+    path: "/", // اطمینان از این که کوکی مربوط به مسیر اصلی است
   });
 
   res.status(200).json({
