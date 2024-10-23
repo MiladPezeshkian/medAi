@@ -310,7 +310,9 @@ exports.logout = (req, res, next) => {
     // process.env.NODE_ENV === "production" ? "None" : "Lax", // در حالت تولید نیاز به None است
   };
   res.cookie("jwt", "loggedout", cookieOptions);
-  next();
+  res.status(200).json({
+    status: "success",
+  });
 };
 
 // Get current user
