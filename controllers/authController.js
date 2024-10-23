@@ -297,6 +297,7 @@ exports.resetPasswordinLoggin = catchAsync(async (req, res, next) => {
 exports.logout = (req, res) => {
   // Delete the cookie by setting it to a value of "loggedout"
   // and setting the expires to 50 seconds from now
+  console.log("iam hereeeeeeee log outtttttt");
   res.cookie("jwt", "loggedout", {
     expires: new Date(Date.now() + 50 * 1000),
     httpOnly: true,
