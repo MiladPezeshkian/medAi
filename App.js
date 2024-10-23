@@ -60,6 +60,7 @@ app.use(xss());
 // Implement CORS for frontend access
 
 // Routes mounting
+console.log(authRoutes);
 app.use("/api/v1/auth", authRoutes); // Authentication routes
 app.use("/api/v1/wishlist", wishList); // Wishlist routes
 app.use("/api/v1/contact", contactUsRoutes); // Contact Us routes
