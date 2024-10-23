@@ -19,7 +19,12 @@ const orders = require("./routes/orderRoutes");
 const app = express();
 const users = require("./routes/userRoutes");
 const coupon = require("./routes/couponRoutes");
-app.options("*", cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    method: ["GET", "POST", "PATCH", "DELETE"],
+  })
+);
 
 app.use("/uploads", express.static("uploads"));
 
