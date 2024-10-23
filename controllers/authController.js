@@ -297,7 +297,7 @@ exports.resetPasswordinLoggin = catchAsync(async (req, res, next) => {
  * @param {Object} req - The request object
  * @param {Object} res - The response object
  */
-exports.logout = (req, res) => {
+exports.logout = (req, res, next) => {
   // کوکی را با نام jwt حذف می‌کنیم و همه تنظیمات مشابه با کوکی اصلی را استفاده می‌کنیم
   const cookieOptions = {
     expires: new Date(
@@ -310,6 +310,7 @@ exports.logout = (req, res) => {
     // process.env.NODE_ENV === "production" ? "None" : "Lax", // در حالت تولید نیاز به None است
   };
   res.cookie("jwt", "LogOut!", cookieOptions);
+  next();
 };
 
 // Get current user
