@@ -21,7 +21,7 @@ const users = require("./routes/userRoutes");
 const coupon = require("./routes/couponRoutes");
 app.use(
   cors({
-    origin: "https://shopclient-4w48.onrender.com/", // یا آدرس دیپلوی شده در React
+    origin: "https://shopclient-4w48.onrender.com", // یا آدرس دیپلوی شده در React
     methods: ["GET", "POST", "PATCH", "DELETE"],
     credentials: true,
   })
