@@ -38,10 +38,7 @@ const port = process.env.PORT || 50000;
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://medailw.netlify.app/",
-];
+const allowedOrigins = ["http://localhost:3000", "https://medailw.netlify.app"];
 if (process.env.NODE_ENV === "production" && process.env.FRONTEND_URL) {
   allowedOrigins.push(process.env.FRONTEND_URL);
 }
