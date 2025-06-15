@@ -1,42 +1,20 @@
 const express = require("express");
-const userController = require("../controllers/userController");
-const authController = require("../controllers/authController");
-
 const router = express.Router();
+const userController = require("../controllers/userAuthController");
 
-// همه کاربران
-router.route("/").get(
-  authController.protect, // فقط کاربران وارد شده می‌توانند کاربران را مشاهده کنند
-  authController.restrictTo("admin", "manager"), // فقط ادمین‌ها می‌توانند کاربران را مشاهده کنند
-  userController.getAllUsers
-);
-router.route("/banUser/:id").patch(
-  authController.protect, // فقط کاربران وارد شده می‌توانند یک کاربر را مشاهده کنند
-  authController.restrictTo("admin", "manager"), // ادمین یا مدیر می‌تواند مشاهده کنند
-  userController.banUser
-);
-router.route("/unBanUser/:id").patch(
-  authController.protect, // فقط کاربران وارد شده می‌توانند یک کاربر را مشاهده کنند
-  authController.restrictTo("admin", "manager"), // ادمین یا مدیر می‌تواند مشاهده کنند
-  userController.unBanUser
-);
-// عملیات بر روی یک کاربر بر اساس ID
-router
-  .route("/:id")
-  .get(
-    authController.protect, // فقط کاربران وارد شده می‌توانند یک کاربر را مشاهده کنند
-    authController.restrictTo("admin", "manager"), // ادمین یا مدیر می‌تواند مشاهده کنند
-    userController.getUser
-  )
-  .patch(
-    authController.protect, // فقط کاربران وارد شده می‌توانند بروزرسانی کنند
-    authController.restrictTo("admin", "manager"), // فقط ادمین یا مدیر می‌تواند بروزرسانی کند
-    userController.updateUser
-  )
-  .delete(
-    authController.protect, // فقط کاربران وارد شده می‌توانند حذف کنند
-    authController.restrictTo("admin", "manager"), // فقط ادمین‌ها می‌توانند حذف کنند
-    userController.deleteUser
-  );
+// Public
+router.post("/signup", userController.signup);
+router.post("/login", userController.login);
+router.post("/forgotPassword", userController.forgotPassword);
+router.post("/verifyResetCode", userController.verifyResetCode);
+router.post("/resetPassword", userController.resetPassword);
+router.get("/islogin", userController.isLogin);
+// Protect all routes below
+router.use(userController.protect);
+
+router.get("/logout", userController.logout);
+router.get("/me", userController.getMe);
+router.patch("/updateMyPassword", userController.updateMyPassword);
+router.patch("/updateMe", userController.updateMe);
 
 module.exports = router;

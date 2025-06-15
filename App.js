@@ -1,3 +1,6 @@
+// App.js
+// Express application setup with security, performance, and routing middleware
+
 const express = require("express");
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
@@ -6,33 +9,36 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const compression = require("compression");
+
 const AppError = require("./utils/AppError");
 const globalErrorHandler = require("./controllers/errorController");
-const apikey = require("./routes/apiKeyRoutes");
-const compression = require("compression");
-// Import Routes
-const authRoutes = require("./routes/authRoutes");
-const contactUsRoutes = require("./routes/contactUsRoutes");
-const wishList = require("./routes/wishListRoute");
-const product = require("./routes/productRoutes");
-const orders = require("./routes/orderRoutes");
+
+// Import application routes
+const userRoutes = require("./routes/userRoutes");
+const doctorRoutes = require("./routes/doctorRoutes");
+const aiRoutes = require("./routes/AiRoutes");
+const appointmentRoutes = require("./routes/appointmentRoutes");
+const userAppointmentRoutes = require("./routes/appointmentUserRoute");
+const chatRoutes = require("./routes/chatsRoutes");
+const docFuser = require("./routes/doctorsForUserRoutes");
 const app = express();
-const users = require("./routes/userRoutes");
-const coupon = require("./routes/couponRoutes");
+
+// CORS configuration for REST endpoints
 app.use(
   cors({
-    origin: [
-      "https://shopclient-4w48.onrender.com",
-      "https://preeminent-cuchufli-3d4192.netlify.app",
-    ],
-    methods: ["GET", "POST", "PATCH", "DELETE"],
+    origin: ["http://localhost:3000", "https://medailw.netlify.app/"],
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
+app.options("*", cors()); // enable preflight
 
+// Serve uploaded files statically
 app.use("/uploads", express.static("uploads"));
 
-// Set security HTTP headers
+// Security HTTP headers
 app.use(helmet());
 
 // Development logging
@@ -40,45 +46,47 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// Limit requests from the same API
-const limiter = rateLimit({
-  max: 100, // حداکثر درخواست‌ها
-  windowMs: 60 * 60 * 1000, // 100 requests per hour (یک ساعت)
+// Rate limiting for chat routes
+const chatLimiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
   message: "Too many requests from this IP, please try again in an hour!",
 });
-// app.use("/api", limiter);
-app.use(compression());
-// Body parser, reading data from body into req.body
+app.use("/api/v1/chat", chatLimiter);
+
+// Body parser: reading JSON bodies into req.body
 app.use(express.json({ limit: "10kb" }));
 
 // Cookie parser
 app.use(cookieParser());
 
-// Data sanitization against NoSQL query injection
+// Data sanitization against NoSQL injection
 app.use(mongoSanitize());
-
-// Data sanitization against XSS (cross-site scripting attacks)
+// Data sanitization against XSS
 app.use(xss());
 
-// Implement CORS for frontend access
+// Compression
+app.use(compression());
 
-// Routes mounting
-// console.log(authRoutes);
-// console.log("pro", product);
-app.use("/api/v1/auth", authRoutes); // Authentication routes
-app.use("/api/v1/wishlist", wishList); // Wishlist routes
-app.use("/api/v1/contact", contactUsRoutes); // Contact Us routes
-app.use("/api/v1/products", product); // Product routes
-app.use("/api/v1/orders", orders); // Orders routes
-app.use("/api/v1/apikey", apikey); // Orders routes
-app.use("/api/v1/users", users);
-app.use("/api/v1/coupons", coupon);
-// Handle unhandled routes
+// Mount application routes
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/user", aiRoutes);
+app.use("/api/v1/doctor", doctorRoutes);
+app.use("/api/v1/doctor/appointment", appointmentRoutes);
+app.use("/api/v1/user/appointment", userAppointmentRoutes);
+app.use("/api/v1/chat", chatRoutes);
+app.use("/api/v1/doctorsforuser", docFuser);
+// Root route
 app.get("/", (req, res) => {
-  res.send("سلام، خوش آمدید!");
+  res.send("Hello, welcome to the API!");
 });
+
+// Allow Socket.IO handshake polling and upgrades
+app.all("/socket.io/*", (req, res, next) => next());
+
+// Handle unknown routes
 app.all("*", (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+  next(new AppError(`Cannot find ${req.originalUrl} on this server!`, 404));
 });
 
 // Global error handling middleware
